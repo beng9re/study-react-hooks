@@ -6,7 +6,7 @@ const users = [
     {
       id: 1,
       username: 'kim',
-      email: 'kims@gmail.com'
+      email: 'kims@gmail.cxom'
       
     },
     { 
