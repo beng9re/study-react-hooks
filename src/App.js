@@ -1,8 +1,8 @@
  import './App.css';
- import Counter_UseState from './Counter_UseState'
+ //import Counter_UseState from './Counter_UseState'
  import TitleSeperater from './TitleSeperater'
- import UserInput_UseRef from './UserInput_UseRef'
- import UserInput_UseEffect from './UserInput_UseEffect'
+ //import UserInput_UseRef from './UserInput_UseRef'
+ import UserInputUseEffect from './UserInput_UseEffect'
 
 
 
@@ -17,7 +17,7 @@ function App() {
       <UserInput_UseRef/>
       <TitleSeperater/> */}
         <TitleSeperater title="useEffect"/>
-      <UserInput_UseEffect/>
+      <UserInputUseEffect/>
       <TitleSeperater/>
 
 

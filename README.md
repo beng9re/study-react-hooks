@@ -7,7 +7,14 @@
     > 리랜더링하지 않을 데이터를 기록 할수도 있음  
     > UseRef() => ref.current 현재 값 
 
-* [UserInputUseEffect](https://github.com/kbh0581/react-hooks/blob/main/src/UserInput_UseEffect.js) :: Hooks hooks lifecycle  
+* [UserInputUseEffect](https://github.com/kbh0581/react-hooks/blob/main/src/UserInput_UseEffect.js) :: Hooks hooks lifecycle 
+     * 리랜더링  :: 리랜더링 될때마다 수행됨 // deps 생략시 
+     <pre>
+       //빈배열 사용
+        useEffect(function(){});
+     </pre>
+
+
     * componentDidmount :: 컴포넌트가 처음 마운트 될때 
      <pre>
        //빈배열 사용
