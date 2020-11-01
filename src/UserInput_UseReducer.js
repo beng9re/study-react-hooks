@@ -1,7 +1,5 @@
 import React,{useRef,useEffect,useMemo,useCallback,useReducer} from 'react';
-
-
-
+import useInputs from './Hooks/UseInput';
 
 const initState = {
     inputs : {
@@ -108,16 +106,17 @@ function UserInputUseReducer(){
     //const count = userRegLengt(userList);
     const count = useMemo(() => userRegLengt(state.userList),[state.userList]);
     
+    const [onChange] = useInputs(state.inputs,dispatcher);
 
-    const createUserOnChange = useCallback((e)=>{
-        const { name, value } = e.target;
-        dispatcher({
-            type : 'createUserOnChange',
-            name,
-            value
-        })
+    // const createUserOnChange = useCallback((e)=>{
+    //     const { name, value } = e.target;
+    //     dispatcher({
+    //         type : 'createUserOnChange',
+    //         name,
+    //         value
+    //     })
      
-    },[state.inputs]);
+    // },[state.inputs]);
 
     const createUserOnAdd = useCallback((e) => {
         const userInfo = {
@@ -143,7 +142,7 @@ function UserInputUseReducer(){
     });
   
     return <div>
-        <CreateUser onChange={createUserOnChange} onAdd = {createUserOnAdd}  inputs={state.inputs}/>
+        <CreateUser onChange={onChange} onAdd = {createUserOnAdd}  inputs={state.inputs}/>
         <UserList userList={state.userList} deleteUser= {deleteUser} ></UserList>
         <div><label>활성상태</label>{count}</div>
     
