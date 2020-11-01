@@ -102,4 +102,4 @@ function UseInput_UseRef(){
 
 
 
-export default UseInput_UseRef;
+export default React.memo(UseInput_UseRef);

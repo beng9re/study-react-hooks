@@ -2,7 +2,10 @@
  //import Counter_UseState from './Counter_UseState'
  import TitleSeperater from './TitleSeperater'
  //import UserInput_UseRef from './UserInput_UseRef'
- import UserInputUseEffect from './UserInput_UseEffect'
+//  import UserInputUseEffect from './UserInput_UseEffect'
+ import CounterUseReducer from './Counter_useReducer'
+ import UserInputUseReducer from './UserInput_UseReducer';
+ 
 
 
 
@@ -16,9 +19,18 @@ function App() {
       {/* <TitleSeperater title="useRef"/>
       <UserInput_UseRef/>
       <TitleSeperater/> */}
-        <TitleSeperater title="useEffect"/>
-      <UserInputUseEffect/>
+        {/* <TitleSeperater title="useEffect"/>
+      <UserInputUseEffect/> */}
+      <TitleSeperater title="useReducer"/>
+      <CounterUseReducer/>
       <TitleSeperater/>
+        
+        <UserInputUseReducer/>
+        <TitleSeperater/>
+      
+      
+
+
 
 
 

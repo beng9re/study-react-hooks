@@ -44,3 +44,73 @@
             const count = useMemo(()=>userRegLengt(userList)
                              ,[userList])
         </pre>
+
+    *  useCallback :: 함수의 메모라이제이션 하여 함수의 재생성을 방지 
+        > Deps 부분은 해당 함수를 참조하는 변수를 꼭넣어줘야함 (state...)
+        <pre>
+            const createUserOnAdd = useCallback((e) => {
+            const userInfo = {
+                id : inputs.id,
+                key : cuurentKey.current,
+                pw : inputs.pw
+            }
+            
+            setUserList([...userList,userInfo]);
+            setInputs({
+                id: '',
+                pw: ''
+            })
+            cuurentKey.current += 1;
+        },[userList]);
+
+    </pre>
+    
+    *   React.memo
+        > 최상위 컴포넌트 리랜더링을 방지해줌
+* UseReducer :: useState 다수의 상태를 변경할때 사용  
+    * [useReducer 1](https://github.com/kbh0581/react-hooks/blob/main/src/Counter_useReducer.js) :: 카운터 예제
+    * [useReducer 2](https://github.com/kbh0581/react-hooks/blob/main/src/UserInput_UseReducer.js) :: input 예제 
+        <pre>
+            /*초기값*/
+            const initState = {
+                inputs : {
+                    id: '',
+                    pw: '',
+                },
+                userList : []
+            }
+            /* 실재 함수 */
+            function reducer(state,action) {
+                switch (action.type) {
+                    case 'createUserOnChange' : {   
+                        return {
+                            ...state,
+                            inputs : {
+                                ...state.inputs,
+                            [action.name] : action.value
+                            }
+                        }
+                    }
+                    case 'ADD_TO_USER' : {
+                        return {
+                            inputs: initState.inputs,
+                            userList: [...state.userList,action.userInfo],
+                        }
+                    }
+                    case 'DELETE_TO_USER' : {
+                        return {
+                            ...state,
+                            userList: action.userList 
+                        }
+                    }
+                }
+            }
+            
+            /*사용부*/
+              const [state,dispatcher] = useReducer(reducer,initState);
+              dispatcher({
+                    type : 'ADD_TO_USER',
+                    userInfo
+              })
+       
+        </pre>

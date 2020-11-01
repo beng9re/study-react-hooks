@@ -1,7 +1,45 @@
-import React,{useRef,useState,useEffect,useMemo,useCallback} from 'react';
+import React,{useRef,useEffect,useMemo,useCallback,useReducer} from 'react';
+
+
+
+
+const initState = {
+    inputs : {
+        id: '',
+        pw: '',
+    },
+    userList : []
+}
+
+function reducer(state,action) {
+    switch (action.type) {
+        case 'createUserOnChange' : {   
+            return {
+                ...state,
+                inputs : {
+                    ...state.inputs,
+                   [action.name] : action.value
+                }
+            }
+        }
+
+        case 'ADD_TO_USER' : {
+            return {
+                inputs: initState.inputs,
+                userList: [...state.userList,action.userInfo],
+            }
+        }
+
+        case 'DELETE_TO_USER' : {
+            return {
+                ...state,
+                userList: action.userList 
+            }
+        }
+    }
+}
 
 const User = React.memo(({userInfo,deleteUser}) => {
-    
     // 컴포넌트가 생기고 난 직후  
     useEffect(()=> {
         console.log(`userInfo.id :: ${userInfo.id} CREATE `);
@@ -61,51 +99,52 @@ function userRegLengt(userList) {
 
 
 
-function UserInputUseEffect(){
+function UserInputUseReducer(){
 
-    const [inputs, setInputs] = useState({
-        id: '',
-        pw: ''
-    });
-
-    const [userList,setUserList] = useState([]);
+    const [state,dispatcher] = useReducer(reducer,initState);
+    // 다수의 state를 정리 하는 방법 
     const cuurentKey = useRef(0);
 
     //const count = userRegLengt(userList);
-    const count = useMemo(()=>userRegLengt(userList),[userList]);
+    const count = useMemo(() => userRegLengt(state.userList),[state.userList]);
     
 
     const createUserOnChange = useCallback((e)=>{
         const { name, value } = e.target;
-        setInputs({
-            ...inputs,
-            [name] : value
+        dispatcher({
+            type : 'createUserOnChange',
+            name,
+            value
         })
-    },[inputs]);
+     
+    },[state.inputs]);
 
     const createUserOnAdd = useCallback((e) => {
         const userInfo = {
-            id : inputs.id,
+            id : state.inputs.id,
             key : cuurentKey.current,
-            pw : inputs.pw
+            pw : state.inputs.pw
         }
         
-        setUserList([...userList,userInfo]);
-        setInputs({
-            id: '',
-            pw: ''
+        dispatcher({
+            type : 'ADD_TO_USER',
+            userInfo
         })
+       
         cuurentKey.current += 1;
 
-    },[userList,inputs]);
+    },[state.userList,state.inputs]);
    
     const deleteUser = useCallback((id)=>{
-        setUserList(userList.filter((user) => user.id !== id));
-    },[userList]);
-
+        dispatcher({
+            type : 'DELETE_TO_USER',
+            userList : state.userList.filter((user) => user.id !== id)
+        })
+    });
+  
     return <div>
-        <CreateUser onChange={createUserOnChange} onAdd={createUserOnAdd}  inputs={inputs}/>
-        <UserList userList={userList} deleteUser={deleteUser} ></UserList>
+        <CreateUser onChange={createUserOnChange} onAdd = {createUserOnAdd}  inputs={state.inputs}/>
+        <UserList userList={state.userList} deleteUser= {deleteUser} ></UserList>
         <div><label>활성상태</label>{count}</div>
     
     </div>
@@ -113,4 +152,4 @@ function UserInputUseEffect(){
 
 
 
-export default React.memo(UserInputUseEffect);
+export default React.memo(UserInputUseReducer);
