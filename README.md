@@ -67,8 +67,9 @@
     
     *   React.memo
         > 최상위 컴포넌트 리랜더링을 방지해줌
-* UseReducer :: useState 다수의 상태를 변경할때 사용  
-    * [useReducer 1](https://github.com/kbh0581/react-hooks/blob/main/src/Counter_useReducer.js) :: 카운터 예제
+        
+* UseReducer :: useState 다수의 상태를 변경할때 사용
+    * [useReducer 1](https://github.com/kbh0581/react-hooks/blob/main/src/Counter_useReducer.js) :: 카운터 예
     * [useReducer 2](https://github.com/kbh0581/react-hooks/blob/main/src/UserInput_UseReducer.js) :: input 예제 
         <pre>
             /*초기값*/
@@ -105,7 +106,7 @@
                     }
                 }
             }
-            
+
             /*사용부*/
               const [state,dispatcher] = useReducer(reducer,initState);
               dispatcher({
