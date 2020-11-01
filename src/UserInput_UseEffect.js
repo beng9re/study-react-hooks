@@ -1,10 +1,6 @@
-import React,{useRef,useState,useEffect} from 'react';
-
-
-
+import React,{useRef,useState,useEffect,useMemo} from 'react';
 
 function User({userInfo,deleteUser}) {
-    console.log(deleteUser);
     
     // 컴포넌트가 생기고 난 직후  
     useEffect(()=> {
@@ -15,8 +11,6 @@ function User({userInfo,deleteUser}) {
         }
     },[])
 
-   
-
     return  <div>
         <label>ID : </label>{userInfo.id}
         <label>PW : </label>{userInfo.pw}
@@ -26,7 +20,7 @@ function User({userInfo,deleteUser}) {
 
 function UserList({userList,deleteUser}){
 
-    console.log(deleteUser)
+    
      // 컴포넌트가 생기고 난 직후  
      // 컴포넌트가  변경될때 
      useEffect(()=> {
@@ -62,7 +56,16 @@ function CreateUser({onChange,onAdd,inputs}) {
     
 }
 
+function userRegLengt(userList) {
+    console.log("실행");
+    return userList.length;
+};
+
+
+
+
 function UserInputUseEffect(){
+
     const [inputs, setInputs] = useState({
         id: '',
         pw: ''
@@ -70,6 +73,10 @@ function UserInputUseEffect(){
 
     const [userList,setUserList] = useState([]);
     const cuurentKey = useRef(0);
+
+    const count = userRegLengt(userList);
+    //const count = useMemo(()=>userRegLengt(userList),[userList]);
+    
 
     const createUserOnChange = (e) =>{
         const { name, value } = e.target;
@@ -94,18 +101,15 @@ function UserInputUseEffect(){
         cuurentKey.current += 1;
 
     }
-
+   
     const deleteUser = id =>{
-
         setUserList(userList.filter((user) => user.id !== id));
-
-        
     }
-
 
     return <div>
         <CreateUser onChange={createUserOnChange} onAdd={createUserOnAdd}  inputs={inputs}/>
         <UserList userList={userList} deleteUser={deleteUser} ></UserList>
+        <div><label>활성상태</label>{count}</div>
     
     </div>
 }
