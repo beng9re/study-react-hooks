@@ -1,5 +1,10 @@
-import React,{useRef,useEffect,useMemo,useCallback,useReducer} from 'react';
+import React,{useRef,useEffect,useMemo,useCallback,useReducer,useContext} from 'react';
+import produce from 'immer'
 import useInputs from './Hooks/UseInput';
+
+
+export const UserDispatch = React.createContext(null);
+
 
 const initState = {
     inputs : {
@@ -10,6 +15,7 @@ const initState = {
 }
 
 function reducer(state,action) {
+    
     switch (action.type) {
         case 'createUserOnChange' : {   
             return {
@@ -29,15 +35,24 @@ function reducer(state,action) {
         }
 
         case 'DELETE_TO_USER' : {
-            return {
-                ...state,
-                userList: action.userList 
-            }
+            // ...state,
+            //     userList: action.userList 
+
+
+            return produce(state,(drft) => {
+                    drft.userList = action.userList
+            })
+                
+            
         }
     }
 }
 
-const User = React.memo(({userInfo,deleteUser}) => {
+
+
+const User = React.memo(({userInfo,userList}) => {
+    const {dispatch} = useContext(UserDispatch);
+
     // 컴포넌트가 생기고 난 직후  
     useEffect(()=> {
         console.log(`userInfo.id :: ${userInfo.id} CREATE `);
@@ -50,11 +65,15 @@ const User = React.memo(({userInfo,deleteUser}) => {
     return  <div>
         <label>ID : </label>{userInfo.id}
         <label>PW : </label>{userInfo.pw}
-        <button onClick={()=>deleteUser(userInfo.id)}>삭제</button>
+        <button onClick={()=> dispatch({
+            type : 'DELETE_TO_USER',
+            userList : userList.filter((user) => userInfo.id !== user.id)
+        })}
+        >삭제</button>
     </div>   
 }); 
 
-const UserList = React.memo(({userList,deleteUser}) => {
+const UserList = React.memo(({userList}) => {
     // 컴포넌트가 생기고 난 직후  
      // 컴포넌트가  변경될때 
      useEffect(()=> {
@@ -74,17 +93,33 @@ const UserList = React.memo(({userList,deleteUser}) => {
             <User 
                 key={userInfo.key}  
                 userInfo={userInfo}
-                deleteUser= {deleteUser}/>
+                userList={userList}/>
             )}
     </div>
 });
 
-const CreateUser = React.memo(({onChange,onAdd,inputs}) => {
+const CreateUser = React.memo(({inputs}) => {
+    const {dispatch,cuurentKey} = useContext(UserDispatch);
     
+    const [onChange] = useInputs(inputs,dispatch);
+
     return <>
     <label>ID </label><input name="id" onChange={onChange} value={inputs.id}></input>
     <label> PW </label><input name="pw" onChange={onChange} value={inputs.pw}></input>
-    <button onClick={onAdd}>추가</button>
+    <button onClick={()=>{
+        const userInfo = {
+            id : inputs.id,
+            key : cuurentKey.current,
+            pw : inputs.pw
+        }
+        
+        dispatch({
+            type : 'ADD_TO_USER',
+            userInfo
+        })
+       
+        cuurentKey.current += 1;
+    }}>추가</button>
     </>
     
 });
@@ -101,52 +136,19 @@ function UserInputUseReducer(){
 
     const [state,dispatcher] = useReducer(reducer,initState);
     // 다수의 state를 정리 하는 방법 
-    const cuurentKey = useRef(0);
-
     //const count = userRegLengt(userList);
     const count = useMemo(() => userRegLengt(state.userList),[state.userList]);
-    
-    const [onChange] = useInputs(state.inputs,dispatcher);
-
-    // const createUserOnChange = useCallback((e)=>{
-    //     const { name, value } = e.target;
-    //     dispatcher({
-    //         type : 'createUserOnChange',
-    //         name,
-    //         value
-    //     })
-     
-    // },[state.inputs]);
-
-    const createUserOnAdd = useCallback((e) => {
-        const userInfo = {
-            id : state.inputs.id,
-            key : cuurentKey.current,
-            pw : state.inputs.pw
-        }
-        
-        dispatcher({
-            type : 'ADD_TO_USER',
-            userInfo
-        })
-       
-        cuurentKey.current += 1;
-
-    },[state.userList,state.inputs]);
-   
-    const deleteUser = useCallback((id)=>{
-        dispatcher({
-            type : 'DELETE_TO_USER',
-            userList : state.userList.filter((user) => user.id !== id)
-        })
-    });
+    const cuurentKey = useRef(0);
   
-    return <div>
-        <CreateUser onChange={onChange} onAdd = {createUserOnAdd}  inputs={state.inputs}/>
-        <UserList userList={state.userList} deleteUser= {deleteUser} ></UserList>
+    return <UserDispatch.Provider value={{dispatch:dispatcher,cuurentKey}}>
+    <div>
+        <CreateUser inputs={state.inputs}/>
+        <UserList userList={state.userList} ></UserList>
         <div><label>활성상태</label>{count}</div>
     
     </div>
+    </UserDispatch.Provider>
+    
 }
 
 

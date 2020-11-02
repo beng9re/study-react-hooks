@@ -115,3 +115,39 @@
               })
        
         </pre>
+    *  Context API : 전역 변수 관리 
+    
+        ```
+        //선언부
+        export const UserDispatch = React.createContext(null);
+        
+        //소비자 
+        <UserDispatch.Provider value={{dispatch:dispatcher,cuurentKey}}>
+        <code>
+        <div>
+            <CreateUser inputs={state.inputs}/>
+            <UserList userList={state.userList} ></UserList>
+            <div><label>활성상태</label>{count}</div>
+        </div>
+        </UserDispatch.Provider>
+        ``` 
+
+    * immer : 불변성 라이브러리 
+    ```
+        import produce from 'immer'
+
+        //BEFER
+        ----------------------------
+        ...state,
+        userList: action.userList 
+        ----------------------------
+
+        불변성 유지
+        produce(state,(drft) => {
+                drft.userList = action.userList
+        })
+    
+    ```
+        
+    
+
