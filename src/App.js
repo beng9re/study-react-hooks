@@ -1,5 +1,6 @@
-import Button from './components/Button'
+import ButtonStyled from './components/ButtonStyled'
 import styled,{css} from 'styled-components'
+
 import './App.scss';
 
 
@@ -16,10 +17,11 @@ const Cycle = styled.div`
 function App() {
   return (
     <div className="App">
-      <Cycle color="red"/>
+      {/* <Cycle color="red"/>
       <Cycle color="yellow"/>
       <Cycle color="blue"/>
-      <Cycle color="" huge/>
+      <Cycle color="" huge/> */}
+      <ButtonStyled>버튼 1</ButtonStyled>
       {/* <div>
         <Button size="medium">BUTTON</Button>
         <Button size="large" color="pink">BUTTON</Button>
