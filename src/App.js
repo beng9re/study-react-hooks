@@ -3,6 +3,8 @@ import styled,{createGlobalStyle, css} from 'styled-components';
 import TodoTemplate from './components/TodoTaplete'; 
 import TodoHeader from './components/TodoHeader'; 
 import TodoList from './components/TodoList'; 
+import TodoCreate from './components/TodoCreate'; 
+import {TodoProvider} from './TodoContext'; 
 
 import './App.scss';
 
@@ -26,11 +28,15 @@ const GlbalStyle = createGlobalStyle`
 function App() {
 
   return <>
+   <TodoProvider>
     <GlbalStyle/>
-    <TodoTemplate>
-      <TodoHeader></TodoHeader>
-      <TodoList></TodoList>
-    </TodoTemplate>
+    
+      <TodoTemplate>
+        <TodoHeader></TodoHeader>
+        <TodoList></TodoList>
+        <TodoCreate></TodoCreate>
+      </TodoTemplate>
+    </TodoProvider>
     
   </>
   
