@@ -100,12 +100,6 @@ function TodoCreate(){
         nextId.current += 1;
     }
 
-    
-    
-    //const onClick = ()
-    //useTodoDispatch
-
-
     return <>
         {open &&
         <InsertFormPositioner>

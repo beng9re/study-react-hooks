@@ -5,6 +5,16 @@ const initialTodos = [
     id: 1,
     text: '프로젝트 생성하기',
     done: true
+  },
+  {
+    id: 2,
+    text: '프로젝트 생성하기',
+    done: true
+  },
+  {
+    id: 3,
+    text: '프로젝트 생성하기',
+    done: true
   }
 ];
 
