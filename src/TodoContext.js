@@ -22,6 +22,10 @@ const todoReducer = function(state,action){
     switch (action.type) {
         case "CREATE":
            return state.concat(action.todo);
+        case "DELETE":
+            // return state.filter((item)=>{item.id != action.id})
+            console.log("DELETE")
+            return  state.filter((item)=> item.id != action.id);
         default:
             break;
     }
