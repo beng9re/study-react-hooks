@@ -15,10 +15,11 @@ function TodoList(){
     const todoList = useTodoState();
     
     return <TodlListBlock>
-            {todoList.map((todoItem) => <TodoItme key={todoItem.id}
-                                        id = {todoItem.id}   
-                                        done={todoItem.done} 
-                                        text={todoItem.text} />)}
+            {todoList.map((todoItem) => 
+                <TodoItme key={todoItem.id}
+                        id = {todoItem.id}   
+                        done={todoItem.done} 
+                        text={todoItem.text} />)}
     </TodlListBlock>
 }
 

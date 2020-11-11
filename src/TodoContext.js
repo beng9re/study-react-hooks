@@ -25,7 +25,17 @@ const todoReducer = function(state,action){
         case "DELETE":
             // return state.filter((item)=>{item.id != action.id})
             console.log("DELETE")
-            return  state.filter((item)=> item.id != action.id);
+            return  state.filter((item)=> item.id !== action.id);
+        case "TOOGLE":
+            
+            return  state.map((item)=>{
+                    if(item.id === action.id){
+                        item.done = !item.done
+                    }
+                    return item;
+                })
+            
+    
         default:
             break;
     }

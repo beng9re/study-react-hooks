@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import styled,{css} from 'styled-components';
 import TodoList from './TodoList';
 import { MdDone, MdDelete } from 'react-icons/md';
-import {useTodoDispatch,useNextIdContext} from '../TodoContext'
+import {useTodoDispatch,useTodoState} from '../TodoContext'
 
 
 const Remove = styled.div`
@@ -66,20 +66,21 @@ const Text = styled.div`
 
 function TodoItem({id,done,text}){
     const dispatcher = useTodoDispatch();
-    const [currentDone,setDone] = useState(done);
-
-    console.log(id)
-
+    const onTogle = (id) => {
+        dispatcher({
+            type:"TOOGLE",
+            id
+        })
+    }
+    
     // dispatcher({
     //     id,
     //     type:"DELETE"
     // })
     return <TodoItemBlock key={id}>
-        <CheckCircle done={currentDone} onClick={()=>{
-            setDone(!currentDone); 
-        }}> {currentDone && <MdDone/>}
+        <CheckCircle done={done} onClick={()=>onTogle(id)}> {done && <MdDone/>}
         </CheckCircle>
-        <Text done={currentDone}>{text}</Text>
+        <Text done={done}>{text}</Text>
        <Remove onClick={(e)=>{
            dispatcher({
                type:"DELETE",
