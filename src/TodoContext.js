@@ -28,11 +28,8 @@ const todoReducer = function(state,action){
             return  state.filter((item)=> item.id !== action.id);
         case "TOOGLE":
             
-            return  state.map((item)=>{
-                    if(item.id === action.id){
-                        item.done = !item.done
-                    }
-                    return item;
+            return  state.map((item)=>{                    
+                    return action.id === item.id ?  {...item,done:!item.done} : item;
                 })
             
     
