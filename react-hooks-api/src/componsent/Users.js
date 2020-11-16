@@ -1,36 +1,26 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import axios from 'axios'
+import UseAsync from './UseAsync';
+import User from './User';
 
 //env 안에 환경변수 가져오기
 const API_PATH = process.env.REACT_APP_API_PATH;
 
 
-function reducer(state,action){
-    switch(action.type){
-        case 'LOADING' :
-            return {
-                loading:true,
-                users:null,
-                error:false
-            }
-        case 'SUCSESS' :
-            return {
-                loading:false,
-                users:action.data,
-                error:false
-            }
-        case 'ERROR' :
-            return {
-                loading: false,
-                users: null,
-                error: action.error
-            }
-        default : 
-            throw new Error(`Unhandled action type: ${action.type}`);
-    }
+async function getUsers(){
+    const response = await axios.get(API_PATH+"/users");
+    
+    return response.data;
 }
 
+
 function Users(){
+    const [userId, setUserId] = useState(null);
+    const [state,fetchData] = UseAsync(getUsers,[]);
+    const { loading, data: users, error } = state;
+    console.log(userId);
+    //fetchData();
+
     // const [users,setUsers] = useState(null);
     // const [loading,setLoding] = useState();
     // const [error,setError] = useState(false);
@@ -49,39 +39,26 @@ function Users(){
     //     setLoding(false);   
     // }
 
-    const [state,dispatcher] = useReducer(reducer,{
-        loading: false,
-        users: null,
-        error: null
-        }
-    );
 
-    const fetchData = async () => {
-        try{
-            dispatcher({type:"LOADING"});
-            const {data} =  await axios.get(API_PATH+"/users");
-            console.log(data);
-            dispatcher({type:"SUCSESS",data});
-        }catch(e){
-            dispatcher({type:"ERROR"});
-        }
-        
-    }
-    useEffect(()=>{
-      fetchData();
-    },[]); //컴포넌트가 생성되자마자
 
-    console.log(state);
-
-    if (state.loading) return <div>로딩중..</div>;
-    if (state.error) return <div>에러가 발생했습니다.</div>;
-    if (!state.users) return null;
+    if (loading) return <div>로딩중..</div>;
+    if (error) return <div>에러가 발생했습니다.</div>;
+    if (!users) return  <button onClick={fetchData}>불러오기</button>;
 
     return <>
         <ul>
-            {state.users.map((user)=><li key={user.id}>{user.name}</li>)}
+            {users.map((user)=>
+            <li style={{ cursor: 'pointer' }}
+                    onClick={() => setUserId(user.id)}
+                    key={user.id}>
+                  {user.name}</li>)}
         </ul>
         <button onClick={fetchData}>리로딩하기</button>
+        <div>
+            {userId && <User id={userId}></User>}
+        </div>
+        
+        
     </>
 }
 
