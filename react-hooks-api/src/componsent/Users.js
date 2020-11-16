@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import axios from 'axios'
 import UseAsync from './UseAsync';
 import User from './User';
+import {useAsync} from 'react-async'
 
 //env 안에 환경변수 가져오기
 const API_PATH = process.env.REACT_APP_API_PATH;
@@ -16,9 +17,16 @@ async function getUsers(){
 
 function Users(){
     const [userId, setUserId] = useState(null);
-    const [state,fetchData] = UseAsync(getUsers,[]);
-    const { loading, data: users, error } = state;
-    console.log(userId);
+    //시작하자마자 불러오는경우
+    const { data: users, error, loading, reload } = useAsync({
+        promiseFn: getUsers
+    });
+
+
+    // const [state,fetchData] = UseAsync(getUsers,[]);
+    // const { loading, data: users, error } = state;
+    
+    
     //fetchData();
 
     // const [users,setUsers] = useState(null);
@@ -43,7 +51,7 @@ function Users(){
 
     if (loading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다.</div>;
-    if (!users) return  <button onClick={fetchData}>불러오기</button>;
+    if (!users) return  <button onClick={reload}>불러오기</button>;
 
     return <>
         <ul>
@@ -53,7 +61,7 @@ function Users(){
                     key={user.id}>
                   {user.name}</li>)}
         </ul>
-        <button onClick={fetchData}>리로딩하기</button>
+        <button onClick={reload}>리로딩하기</button>
         <div>
             {userId && <User id={userId}></User>}
         </div>
