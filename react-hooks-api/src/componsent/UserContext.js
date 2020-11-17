@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React from 'react'
 
+const API_PATH = process.env.REACT_APP_API_PATH;
 const initState = {
     users : {
         loading :false,
@@ -70,9 +72,67 @@ function userReducer(state,action) {
     }
 }
 
-function UserContext(){
 
+
+// State 용 Context 와 Dispatch 용 Context 따로 만들어주기
+const UsersStateContext = createContext(null);
+const UsersDispatchContext = createContext(null);
+
+// 위에서 선언한 두가지 Context 들의 Provider 로 감싸주는 컴포넌트
+export function UsersProvider({ children }) {
+    const [state, dispatch] = useReducer(userReducer, initState);
+    return (
+      <UsersStateContext.Provider value={state}>
+        <UsersDispatchContext.Provider value={dispatch}>
+          {children}
+        </UsersDispatchContext.Provider>
+      </UsersStateContext.Provider>
+    );
 }
 
+// State 를 쉽게 조회 할 수 있게 해주는 커스텀 Hook
+export function useUsersState() {
+    const state = useContext(UsersStateContext);
+    if (!state) {
+      throw new Error('Cannot find UsersProvider');
+    }
+    return state;
+  }
+  
+  // Dispatch 를 쉽게 사용 할 수 있게 해주는 커스텀 Hook
+export function useUsersDispatch() {
+    const dispatch = useContext(UsersDispatchContext);
+    if (!dispatch) {
+      throw new Error('Cannot find UsersProvider');
+    }
+    return dispatch;
+}
 
-export default UserContext;
+export async function getUsers(dispatch) {
+    dispatch({type:'GET_USERS'});
+    try {
+        const response = await axios.get(
+            `${API_PATH}/users`
+    )
+        dispatch({type:'GET_USERS_SUCCESS', data:response.data});
+    }catch(e){
+        dispatch({type:'GET_USERS_ERROR',error:e});
+    }
+}
+
+export async function getUser(dispatch, id) {
+    dispatch({ type: 'GET_USER' });
+    try {
+        const response = await axios.get(
+            `${API_PATH}/users/${id}`
+        );
+        dispatch({ type: 'GET_USER_SUCCESS', data: response.data });
+    } catch (e) {
+        dispatch({ type: 'GET_USER_ERROR', error: e });
+    }
+}
+    
+
+ 
+
+
