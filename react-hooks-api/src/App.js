@@ -1,14 +1,12 @@
+import { UsersProvider } from "./componsent/UserContext";
 import Users from "./componsent/Users";
 
 function App() {
   
   return (
-    <div>
-      <Users>
-        
-      </Users>
-    </div>
-    
+      <UsersProvider>
+        <Users></Users>
+      </UsersProvider>
   );
 }
 

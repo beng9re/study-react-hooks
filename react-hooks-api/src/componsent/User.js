@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useReducer, useState } from 'react';
+
 //import UseAsync from './UseAsync';
 import {useAsync} from 'react-async'
+import { getUser } from './UserContext';
 
 
 const API_PATH = process.env.REACT_APP_API_PATH;
@@ -14,18 +16,18 @@ async function getUser({id}){
 
 
 function User({id}){
-  //const [state] = UseAsync(() => getUser(id),[id]);
-  //const {loading, data: user, error } = state;
+  const [state] = UseAsync(() => getUser(id),[id]);
+  const {loading, data: user, error } = state;
   const {loading,data:user,error,run} = useAsync({
      promiseFn:getUser,
      id,
      watch: id
-    })
-  
+ })
+    
 
-  if (loading) return <div>로딩중..</div>;
-  if (error) return <div>에러가 발생했습니다</div>;
-  if (!user) return null;
+    if (loading) return <div>로딩중...</div>;
+    if (error) return <div>에러가 발생했습니다</div>;
+    if (!user) return null;
 
   return (
     <div>
