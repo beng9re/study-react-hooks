@@ -9,4 +9,5 @@ export async function getUsers() {
 export async function getUser(id) {
     const response = await axios.get(`${API_PATH}/users/${id}`);
     return response.data;
+    //추가
 }
