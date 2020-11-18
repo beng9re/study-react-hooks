@@ -3,25 +3,24 @@ import axios from 'axios'
 import UseAsync from './UseAsync';
 import User from './User';
 import {useAsync} from 'react-async'
-import { useUsersState, useUsersDispatch, getUsers } from './UsersContext';
+import { useUsersState, useUsersDispatch, getUsers } from './UserContext';
 
 //env 안에 환경변수 가져오기
 const API_PATH = process.env.REACT_APP_API_PATH;
 
 
-async function getUsers(){
-    const response = await axios.get(API_PATH+"/users");
-    
-    return response.data;
-}
+// async function getUsers(){
+//     const response = await axios.get(API_PATH+"/users");
+//     return response.data;
+// }
 
 
 function Users(){
     const [userId, setUserId] = useState(null);
     //시작하자마자 불러오는경우
-    const { data: users, error, loading, reload } = useAsync({
-        promiseFn: getUsers
-    });
+    // const { data: users, error, loading, reload } = useAsync({
+    //     promiseFn: getUsers
+    // });
     const state = useUsersState();
     const dispatch = useUsersDispatch();
 
@@ -59,7 +58,7 @@ function Users(){
 
     if (loading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다.</div>;
-    if (!users) return  <button onClick={reload}>불러오기</button>;
+    if (!users) return  <button onClick={fetchData}>불러오기</button>;
 
     return <>
         <ul>
@@ -69,7 +68,7 @@ function Users(){
                     key={user.id}>
                   {user.name}</li>)}
         </ul>
-        <button onClick={reload}>리로딩하기</button>
+        <button onClick={fetchData}>리로딩하기</button>
         <div>
             {userId && <User id={userId}></User>}
         </div>

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React from 'react'
+import React,{createContext,useContext,useReducer} from 'react'
+import createAsyncDispatcher from './asyncActionUtils';
+import * as api from './api'; // api 파일에서 내보낸 모든 함수들을 불러옴
 
-const API_PATH = process.env.REACT_APP_API_PATH;
 const initState = {
     users : {
         loading :false,
@@ -108,29 +109,33 @@ export function useUsersDispatch() {
     return dispatch;
 }
 
-export async function getUsers(dispatch) {
-    dispatch({type:'GET_USERS'});
-    try {
-        const response = await axios.get(
-            `${API_PATH}/users`
-    )
-        dispatch({type:'GET_USERS_SUCCESS', data:response.data});
-    }catch(e){
-        dispatch({type:'GET_USERS_ERROR',error:e});
-    }
-}
+export const getUsers = createAsyncDispatcher('GET_USERS',api.getUsers)
+export const getUser = createAsyncDispatcher('GET_USER',api.getUser)
+ 
+// export async function getUsers(dispatch) {
+//     dispatch({type:'GET_USERS'});
+//     try {
+//         const response = await axios.get(
+//             `${API_PATH}/users`
+//     )
+//         dispatch({type:'GET_USERS_SUCCESS', data:response.data});
+//     }catch(e){
+//         dispatch({type:'GET_USERS_ERROR',error:e});
+//     }
+// }
 
-export async function getUser(dispatch, id) {
-    dispatch({ type: 'GET_USER' });
-    try {
-        const response = await axios.get(
-            `${API_PATH}/users/${id}`
-        );
-        dispatch({ type: 'GET_USER_SUCCESS', data: response.data });
-    } catch (e) {
-        dispatch({ type: 'GET_USER_ERROR', error: e });
-    }
-}
+// export async function getUser(dispatch, id) {
+//     dispatch({ type: 'GET_USER' });
+//     try {
+//         const response = await axios.get(
+//             `${API_PATH}/users/${id}`
+//         );
+//         console.log(response)
+//         dispatch({ type: 'GET_USER_SUCCESS', data: response.data });
+//     } catch (e) {
+//         dispatch({ type: 'GET_USER_ERROR', error: e });
+//     }
+// }
     
 
  
