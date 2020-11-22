@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {useTodoState} from '../TodoContext';
 
-const TodoHeadBlock = styled.div`
+const TodoHeadBlock = styled.div`  
     padding : 48px 32px 32px 24px;
     border-bottom: 1px solid #e9ecef; 
 
