@@ -1,11 +1,11 @@
 import React from 'react'
 
 
-const Abort = () =>{
+const About = () =>{
     return (
         <div>
             <h1>
-                Abort 영역 
+            About 영역 
             </h1>
             <p>
                 연습용 프로젝트 
@@ -15,4 +15,4 @@ const Abort = () =>{
 } 
 
 
-export default Abort;
+export default About;
