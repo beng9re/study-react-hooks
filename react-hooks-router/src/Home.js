@@ -4,7 +4,7 @@ const Home = () => {
     return (
         <div>
             <h1>
-                홈
+                홈 s
             </h1>
             <p>홈영역</p>
             
