@@ -5,3 +5,4 @@
     => SCSS + Component in Css
 * react-hooks-api : 리액트 API 
 * react-hooks-router : 리액트 라우터
+* react-hooks-redux :  리액트 + 리덕스
