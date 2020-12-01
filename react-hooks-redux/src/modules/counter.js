@@ -13,7 +13,7 @@ export const decrease = () => ({type:DECREASE});
 const initialState = {
     number : 0,
     diff : 1
-}
+};
 
 /* 리듀서 선언 */
 // 리듀서는 export default 로 내보내주세요.
