@@ -9,5 +9,10 @@
     ```
         const store = createStore(reducer);
     ```
+* react-redux 
+    : 프로젝트 연결
+    ```
+        yarn add react-redux
+    ```
 
     
