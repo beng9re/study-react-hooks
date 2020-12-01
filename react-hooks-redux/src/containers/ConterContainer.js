@@ -12,8 +12,8 @@ function ConterContainer(){
     }));
 
     const dispatch = useDispatch();
-    const onIncrease = () => dispatch(increase);
-    const onDecrease = () => dispatch(decrease);
+    const onIncrease = () => dispatch(increase());
+    const onDecrease = () => dispatch(decrease());
     const onSetDiff = diff => dispatch(setDiff(diff));
 
     return (
@@ -29,7 +29,5 @@ function ConterContainer(){
     )
 
 }
-
-
 
 export default ConterContainer;
