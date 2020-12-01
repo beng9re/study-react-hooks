@@ -1,9 +1,12 @@
 import React from 'react';
 
-function TodoItem({todo}){
-
+function TodoItem({todo,onToggle}){
+    
     return <>
-        <li>{todo}</li>
+         <li style={{ textDecoration: todo.done ? 'line-through' : 'none' }}
+            onClick={() => onToggle(todo.id)}
+        >
+        {todo.text}</li>
     </>
 }
 

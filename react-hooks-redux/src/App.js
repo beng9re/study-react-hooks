@@ -8,6 +8,7 @@ function App() {
       <div>
           <CounterContainer></CounterContainer>
       </div>
+      <br></br>
       <div>
         <TodoContainer></TodoContainer>
       </div>
