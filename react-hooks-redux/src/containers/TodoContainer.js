@@ -10,6 +10,7 @@ function TodoContainer(){
     const onCreate = text => dispatch(addTodo(text));
     const onToggle = useCallback(id => dispatch(toggleTodo(id)), [dispatch]);
     const todos = useSelector(state => state.todos);
+    //useSelector equalityFn
     console.log(todos);
 
     return <div>
